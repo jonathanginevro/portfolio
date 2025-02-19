@@ -25,11 +25,11 @@ export default function Header() {
               Projects
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="#contact" className="hover:text-red-400 transition-colors">
               Contact
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>
