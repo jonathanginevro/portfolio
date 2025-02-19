@@ -14,13 +14,14 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    unoptimized: true, // Required for GitHub Pages
   },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  output: "export", // 🚀 This enables static export
 }
 
 mergeConfig(nextConfig, userConfig)
