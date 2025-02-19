@@ -1,28 +1,27 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
-import { sendEmail } from "@/app/actions"
+import { useState, useRef } from "react";
 
 export default function Contact() {
-  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-  const [errorMessage, setErrorMessage] = useState("")
+  const [formStatus, setFormStatus] = useState("idle");
+  const formRef = useRef<HTMLFormElement | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setFormStatus("loading")
+    event.preventDefault();
+    setFormStatus("loading");
 
-    const form = event.currentTarget;
-    const formData = new FormData(event.currentTarget)
-    const result = await sendEmail(formData)
+    const formData = new FormData(event.currentTarget);
+    const response = await fetch("https://formspree.io/f/xqaewgkv", {
+      method: "POST",
+      body: formData,
+      headers: { Accept: "application/json" },
+    });
 
-    if (result.error) {
-      setFormStatus("error")
-      setErrorMessage(result.error)
+    if (response.ok) {
+      setFormStatus("success");
+      formRef.current?.reset();
     } else {
-      setFormStatus("success")
-      form.reset()
+      setFormStatus("error");
     }
   }
 
@@ -31,11 +30,9 @@ export default function Contact() {
       <div className="container mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Get in Touch</h2>
         <div className="max-w-md mx-auto">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} ref={formRef}>
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium mb-1">
-                Name
-              </label>
+              <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
               <input
                 type="text"
                 id="name"
@@ -45,9 +42,7 @@ export default function Contact() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
-                Email
-              </label>
+              <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
               <input
                 type="email"
                 id="email"
@@ -57,9 +52,7 @@ export default function Contact() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="message" className="block text-sm font-medium mb-1">
-                Message
-              </label>
+              <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
               <textarea
                 id="message"
                 name="message"
@@ -75,13 +68,11 @@ export default function Contact() {
             >
               {formStatus === "loading" ? "Sending..." : "Send Message"}
             </button>
+            {formStatus === "success" && <p className="mt-4 text-green-400">Thank you for your message!</p>}
+            {formStatus === "error" && <p className="mt-4 text-red-400">Something went wrong. Please try again.</p>}
           </form>
-          {formStatus === "success" && (
-            <p className="mt-4 text-green-400">Thank you for your message.</p>
-          )}
-          {formStatus === "error" && <p className="mt-4 text-red-400">Error: {errorMessage}</p>}
         </div>
       </div>
     </section>
-  )
+  );
 }

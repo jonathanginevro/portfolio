@@ -1,16 +1,16 @@
 import Image from "next/image"
-import { ExternalLink, GitlabIcon as GitHub } from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 
 const projects = [
   {
-    title: "Anonymization API & App",
+    title: "Anonymization API",
     description: "A secure API and app designed to anonymize sensitive data, ensuring privacy compliance while preserving data utility.",
     image: "/placeholder.svg?height=200&width=300",
     github: "https://github.com",
     live: "https://example.com",
   },
   {
-    title: "Birthday Tracker App",
+    title: "Birthday Tracker",
     description: "A user-friendly Android app that helps track and manage birthdays, sending timely reminders and customizable notifications.",
     image: "/placeholder.svg?height=200&width=300",
     github: "https://github.com",
@@ -50,10 +50,10 @@ export default function Projects() {
                     rel="noopener noreferrer"
                     className="text-red-400 hover:text-red-300 transition-colors flex items-center"
                   >
-                    <GitHub size={20} className="mr-1" />
+                    <Github size={20} className="mr-1" />
                     Code
                   </a>
-                  <a
+                  {/* <a
                     href={project.live}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -61,7 +61,7 @@ export default function Projects() {
                   >
                     <ExternalLink size={20} className="mr-1" />
                     Live Demo
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
